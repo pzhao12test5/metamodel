@@ -16,27 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.metamodel.jdbc;
+package org.apache.metamodel.mongodb.common;
 
-import java.sql.SQLException;
+import java.io.Serializable;
 
-import org.apache.metamodel.MetaModelException;
-import org.apache.metamodel.UpdateScript;
+import org.apache.metamodel.schema.ColumnType;
+import org.apache.metamodel.util.SimpleTableDef;
 
 /**
- * MetaModel's representation of {@link SQLException} that gets thrown out of an {@link UpdateScript} and gets
- * converted into a {@link RolledBackUpdateException}.
+ * Defines a table layout for MongoDB tables. This class can
+ * be used as an instruction set for the MongoDB DataContext implementations to specify
+ * which collections, which columns (and their types) should be included in the
+ * schema structure of a Mongo DB database.
+ * 
+ * @deprecated use {@link SimpleTableDef} instead.
  */
-public class UncheckedSQLException extends MetaModelException {
+@Deprecated
+public final class MongoDbTableDef extends SimpleTableDef implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public UncheckedSQLException(SQLException e) {
-        super(e);
+    public MongoDbTableDef(String name, String[] columnNames, ColumnType[] columnTypes) {
+        super(name, columnNames, columnTypes);
     }
 
-    @Override
-    public synchronized SQLException getCause() {
-        return (SQLException) super.getCause();
+    public MongoDbTableDef(String name, String[] columnNames) {
+        super(name, columnNames);
     }
 }
